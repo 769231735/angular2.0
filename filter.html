@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>过滤器</title>
+	<script src="angular.min.js"></script>
+</head>
+<body ng-app = "myApp" ng-controller="myController">
+货币过滤器：<input type="text" ng-model="num">{{num | currency:"￥"}}
+<hr>
+大小写过滤器：<input ng-model="str" type="text"><br>
+转换成大写：{{str | uppercase}} <br>
+转换成小写：{{str | lowercase}}
+<hr>
+
+字段(filter)过滤器：<input type="text" ng-model="word">
+<ul>
+	<li ng-repeat="v in person | filter:word">
+		{{v.name}}
+	</li>
+</ul>
+<hr>
+排序过滤器：<li ng-repeat="v in person | orderBy:'age':false">姓名是：{{v.name}}年龄是{{v.age}}</li>
+<hr>
+<input type="text" ng-model="mytext">
+<p ng-repeat="v in person | filter:mytext|orderBy:'age':true">姓名是：{{v.name}}年龄是{{v.age}}</p>
+</body>
+<script>
+	var app = angular.module("myApp",[]);
+	app.controller("myController",function($scope){
+		$scope.num="";
+		$scope.str="";
+		$scope.word="";
+		$scope.mytext="";
+		$scope.person=[{name:"张三",age:28},{name:"小马哥",age:23},{name:"李四",age:21},{name:"王五",age:20},{name:"王六",age:38},];		
+	})
+</script>
+</html>

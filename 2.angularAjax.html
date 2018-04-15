@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>post</title>
+	<script src="angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+	姓名：<input type="text" ng-model="username"><br>
+	年龄：<input type="text" ng-model="age"><br>
+	<button ng-click="sub()">提交</button>
+	姓名：{{aname}};年龄：{{aage}}
+</body>
+<script>
+	var app = angular.module("myApp",[]);
+	app.controller("myController",function($scope,$http){
+		$scope.username = "";
+		$scope.age = "";
+		$scope.sub = function(){
+			var str = "username="+$scope.username +"&age="+$scope.age;
+			$http.post("/post",str,{headers:{"Content-Type":"application/x-www-form-urlencoded"}}).success(function(res){
+				console.log(res);
+				$scope.aname = res.username;
+				$scope.aage = res.age;
+			}).error(function(err){
+				console.log(err);
+			})
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="angular.min.js"></script>
+
+</head>
+<body ng-app ="myApp" ng-controller="myController">
+	<button ng-click="changeDiv()">点击我切换显示/隐藏</button>
+	<div ng-show="judge">我是div一</div>
+	<div ng-hide="!judge">我是div二</div>
+	<!-- ng-if会从dom节点删除掉，导致双向绑定出问题 -->
+	<div ng-if="judge">我是div三</div>
+
+</body>
+<script>
+	var app = angular.module("myApp",[]);
+	app.controller("myController",function($scope){
+		$scope.judge = true;
+		$scope.changeDiv=function(){
+			$scope.judge = !$scope.judge
+		}
+	})
+</script>
+</html>

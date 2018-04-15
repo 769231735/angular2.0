@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Jsonp跨域</title>
+	<script src="../common/angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+	<input ng-model="keyWords" type="text">
+	<button ng-click="sub()">搜索</button>
+	<div ng-repeat="val in data">
+		<p>{{val}}</p>
+	</div>                                            
+</body>
+<script>
+	// url = "www.baidu.com/fd/fds/?cb=JSON_CALLBACK";
+var app = angular.module("myApp",[]);
+app.controller("myController",function($scope,$http){
+	$scope.keyWords = "";
+	$scope.sub=function(){
+		// cb后面必须是JSON_CALLBACK
+		var url = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+$scope.keyWords+"&cb=JSON_CALLBACK";
+		$http.jsonp(url).success(function(res){
+			console.log(res);
+			$scope.data = res.s;
+		}).error(function(err){
+			console.log(err);
+		})
+	}
+
+})
+	
+</script>
+</html>

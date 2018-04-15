@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单验证</title>
+	<script src="angular.min.js"></script>
+	<link rel="stylesheet" href="node_modules/_bootstrap@3.3.7@bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" ng-app="myApp" ng-controller="myController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">注册</h3>
+            </div>
+            <div class="panel-body">
+            	<!-- 清除表单默认事件 name变量 -->
+                <form class="form-horizontal" novalidate="novalidate" name="myform">
+                    <div class="form-group">
+                        <label for="users" class="col-sm-4 control-label" >姓名：</label>
+                        <div class="col-sm-4">
+                        	<!-- 最小长度，最大长度，必须得有三个条件 -->
+                            <input type="text" class="form-control" id="users" ng-minlength="8" ng-maxlength="12" ng-required="true" name="username" ng-model="userinfo.username" placeholder="请输入用户名">
+                        </div>
+                        <div ng-hide="myform.username.$valid" class="col-sm-4 text-danger form-control-static">用户名必须是8~12位{{myform.username.$valid}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwdId" class="col-sm-4 control-label">密码：</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="pwdId" ng-model="userinfo.pwd" name="pwd" ng-minlength="8" ng-maxlength="12" ng-required="true"  placeholder="请输入密码">
+                        </div>
+                        <div ng-hide="myform.pwd.$valid" class="col-sm-4 text-danger form-control-static">密码必须是8~12位{{myform.pwd.$valid}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">性别：</label>
+                        <div class="col-sm-4">
+                            <label class="radio-inline">
+                            	<!--  -->
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked ng-model="userinfo.sex" value="1"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="userinfo.sex" value="2"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="checkbox col-sm-4">
+                            <label class="checkbox-inline">
+                                <input ng-require="true"   name="isAgree" ng-model="userinfo.isAgree" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."> <span ng-class="{true:'text-success',false:'text-danger'}[userinfo.isAgree]">{{userinfo.isAgree}}是否同意条款</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-4 control-label">选择城市：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" ng-require="true" ng-model="userinfo.city" name="myselect">
+                            	<option value="">--请选择城市--</option>
+                                <option value="1">广州</option>
+                                <option value="2">北京</option>
+                                <option value="3">上海</option>
+                                <option value="4">深圳</option>
+                            </select>
+                        </div>
+                        <div ng-hide="myform.myselect.$valid" class="col-sm-4 text-danger form-control-static">请选择城市</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                        	<!-- 验证合法 所有的合法才通过 -->
+                            <button ng-click="sub()" type="button" class="btn btn-success" ng-disabled="!myform.$valid">注册</button>
+                            <button ng-click="reset()" class="btn btn-danger" ng-disabled="myform.$pristine">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+	var app = angular.module("myApp",[]);
+	app.controller("myController",function($scope,$http){
+		$scope.userinfo={
+			username:"",
+			pwd:"",
+			sex:1,
+			isAgree:false,
+			city:""
+		}
+		$scope.sub=function(){
+			console.log($scope.userinfo);
+            var str = "username="+$scope.userinfo.username+"&pwd="+$scope.userinfo.pwd+"&sex="+$scope.userinfo.sex+"&isAgree="+$scope.userinfo.isAgree+"&city="+$scope.userinfo.city;
+
+            console.log(str);
+
+            $http.post("/post",str,{headers:{"Content-Type":"application/x-www-form-urlencoded"}}).success(function(res){
+                alert(res);               console.log(res)
+            }).error(function(err){
+                console.log(err);
+            })
+		}
+		$scope.reset = function(){
+				$scope.userinfo={
+				username:"",
+				pwd:"",
+				sex:1,
+				isAgree:false,
+				city:""
+			}
+            $scope.myform.$setPristine();
+
+		}
+	})
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
